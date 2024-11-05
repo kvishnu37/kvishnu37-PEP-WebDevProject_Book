@@ -1,53 +1,155 @@
-/* Below are styles that are optional to use. You can choose to incorporate your own CSS styles. */
-
-body {
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
     margin: 0;
     padding: 0;
-}
-
-header, footer {
-    background-color: #333;
-    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+  }
+  
+  header {
+    background-color: #4CAF50; 
+    color: white;
+    padding: 1rem;
+    width: 100%;
     text-align: center;
+    font-size: 1.5em;
+  }
+  
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 800px;
     padding: 1rem;
-}
-
-main {
-    padding: 2rem;
-}
-
-#search-form {
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-
-#filter-sort {
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  
+  #search-type{
+  width: 70px;
+  height: 30px;
+  }
+  
+  #search-input {
+    padding: 10px;
+    border: 2px solid #4CAF50; 
+    border-radius: 5px;
+    transition: border-color 0.3s;
+    flex: 1; 
+  }
+  
+  #search-input:focus {
+    border-color: #367a35; 
+  }
+  
+  #search-button {
+    padding: 10px 15px;
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  #search-button:hover {
+    background-color: #0056b3; 
+    transform: translateY(-2px); 
+  }
+  
+  .button-container {
+    display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-#book-list {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  
+  .sort-button,
+  .ebook-button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.3s;
+    flex: 1; 
+    margin: 0 5px; 
+  }
+  
+  .sort-button {
+  
+    background-color: #4b8f4b;
+    color: #fff;
+  }
+  
+  .sort-button:hover {
+    background-color: #367a35; 
+    transform: translateY(-2px);
+  }
+  
+  .ebook-button {
+    background-color: #007bff; 
+    color: #fff;
+  }
+  
+  .ebook-button:hover {
+    background-color: #0056b3; 
+    transform: translateY(-2px);
+  }
+  
+  
+  #book-list {
     list-style-type: none;
-}
-
-.book-item {
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%; 
+  }
+  
+  #book-list li {
     border: 1px solid #ddd;
+    border-radius: 8px; 
     padding: 1rem;
-    border-radius: 5px;
-}
-
-.book-item img {
-    max-width: 100%;
-    height: auto;
-}
-
-#selected-book {
-    border: 1px solid #ddd;
-    padding: 1rem;
-    border-radius: 5px;
+    background: white; 
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s;
+  }
+  
+  #book-list li:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  }
+  
+  #selected-book {
     margin-top: 1rem;
-}
-
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px; 
+    background: #fff; 
+  }
+  
+  @media (min-width: 600px) {
+    form {
+        flex-direction: row;
+    }
+    #book-list {
+        grid-template-columns: 1fr 1fr; 
+    }
+  }

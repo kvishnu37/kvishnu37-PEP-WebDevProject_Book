@@ -1,4 +1,15 @@
 // add variable references and event listeners here!
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
+const searchType = document.getElementById('search-type');
+const bookList = document.getElementById('book-list');
+const selectedBook = document.getElementById('selected-book');
+const sortRatingButton = document.getElementById('sort-rating');
+const ebookFilter = document.getElementById('ebook-filter');
+
+searchForm.addEventListener('submit', handleSearch);
+sortRatingButton.addEventListener('click', handleSort);
+ebookFilter.addEventListener('change', handleFilter);
 
 /**
  * Searches for books using the Google Books API based on the given query and type.
@@ -27,6 +38,10 @@
  * 
  */
 async function searchBooks(query, type) {
+    const url = `https://openlibrary.org/search.json?${type}=${encodeURIComponent(query)}&fields=title,author_name,isbn,cover_i,ebook_access,first_publish_year,ratings_sortable&limit=10`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.docs || [];
 }
 
 /**
@@ -53,6 +68,19 @@ async function searchBooks(query, type) {
 * 5. Ensures that the 'selected-book' element is not visible.
 */
 function displayBookList(books) {
+    bookList.innerHTML = ''; 
+    books.forEach(book => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="title-element">${book.title}</div>
+            <div class="author-element">${book.author_name ? book.author_name.join(', ') : 'Unknown Author'}</div>
+            <img class="cover-element" src="https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg" alt="Book Cover">
+            <div class="rating-element">Rating: ${book.ratings_sortable || 'N/A'}</div>
+            <div class="ebook-element">eBook Access: ${book.ebook_access || 'N/A'}</div>
+        `;
+        li.addEventListener('click', () => displaySingleBook(book));
+        bookList.appendChild(li);
+    });
   
 }
 
@@ -75,6 +103,11 @@ function displayBookList(books) {
  * 7. Handles any errors that may occur during the search process.
  */
 async function handleSearch(event) {
+    event.preventDefault();
+    const query = searchInput.value;
+    const type = searchType.value; 
+    const books = await searchBooks(query, type); 
+    displayBookList(books);
 
 }
 
@@ -105,6 +138,15 @@ async function handleSearch(event) {
  * 
  */
 function displaySingleBook(book) {
+  selectedBook.style.display = 'block';
+  bookList.style.display = 'none';
+  selectedBook.querySelector('.title-element').textContent = book.title;
+  selectedBook.querySelector('.author-element').textContent = `Author: ${book.author_name.join(', ')}`;
+  selectedBook.querySelector('.published-element').textContent = `First Published: ${book.first_publish_year || 'N/A'}`;
+  selectedBook.querySelector('.cover-element').src = `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`;
+  selectedBook.querySelector('.ebook-element').textContent = `eBook Access: ${book.ebook_access || 'N/A'}`;
+  selectedBook.querySelector('.rating-element').textContent = `Rating: ${book.ratings_sortable || 'N/A'}`;
+  
 
 }
 
@@ -124,6 +166,14 @@ function displaySingleBook(book) {
  * 
  */
 function handleFilter() {
+    const ebookFilter = document.getElementById('ebook-filter').checked;
+    const bookList = document.getElementById('book-list');
+    const books = Array.from(bookList.children);
+
+    books.forEach(book => {
+        const ebookAvailable = book.querySelector('.ebook-element').textContent.includes('Available');
+        book.style.display = ebookFilter && !ebookAvailable ? 'none' : 'block';
+    });
 
 }
 
@@ -142,5 +192,12 @@ function handleFilter() {
  * 
  */
 function handleSort() {
-
+    const bookItems = Array.from(bookList.children);
+  bookItems.sort((a, b) => {
+    const ratingA = parseFloat(a.querySelector(".rating-element").textContent.split(": ")[1]) || 0;
+    const ratingB = parseFloat(b.querySelector(".rating-element").textContent.split(": ")[1]) || 0;
+    return ratingB - ratingA;
+  });
+  bookList.innerHTML = "";
+  bookItems.forEach((item) => bookList.appendChild(item));
 }

@@ -7,7 +7,41 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <h1>Book Finder</h1>
+    </header>
     
+    <main>
+        <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search for books..." required>
+            <select id="search-type">
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="isbn">ISBN</option>
+            </select>
+            <button type="submit" id="search-button">Search</button>
+            <button type="button" id="sort-rating">Sort by Rating</button>
+            <label>
+                <input type="checkbox" id="ebook-filter"> Show only eBooks
+            </label>
+        </form>
+    
+        <ul id="book-list"></ul>
+    
+        <div id="selected-book" style="display: none;">
+            <h2>Selected Book Details</h2>
+            <div class="title-element"></div>
+            <div class="author-element"></div>
+            <div class="published-element"></div>
+            <img class="cover-element" src="" alt="Book Cover">
+            <div class="ebook-element"></div>
+            <div class="rating-element"></div>
+            <div class="isbn-element"></div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy Book Finder Application</p>
+    </footer>
     
     <script src="script.js"></script>
 </body>
